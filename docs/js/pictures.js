@@ -135,8 +135,6 @@ const uploadForm = document.getElementById('upload-select-image');
 
 let userHashtags = []
 
-uploadForm.addEventListener('submit', handleHashtagValidation);
-
 hashtagsInput.addEventListener('input', handleHashtagInput)
 
 function handleHashtagInput() {
@@ -164,8 +162,82 @@ function handleHashtagInput() {
     })
 }
 
-function handleHashtagValidation(event) {
-    event.preventDefault();
+const scaleUpBtn = document.querySelector('.resize__control--plus');
+const scaleDownBtn = document.querySelector('.resize__control--minus');
+let scaleValue = document.querySelector('.resize__control--value').value;
+const userImg = document.querySelector('.img-upload__preview');
+const SCALE_STEP = 25;
 
+scaleUpBtn.addEventListener('click', () => {
+    if(parseInt(scaleValue) < 100) {
+        scaleValue = `${parseInt(scaleValue) + SCALE_STEP}%`;
+        document.querySelector('.resize__control--value').value = scaleValue;
+        userImg.style.transform = `scale(${parseInt(scaleValue) / 100})`;
+    }
+})
+
+scaleDownBtn.addEventListener('click', () => {
+    if(parseInt(scaleValue) > 25) {
+        
+        scaleValue = `${parseInt(scaleValue) - SCALE_STEP}%`;
+        document.querySelector('.resize__control--value').value = scaleValue;
+        userImg.style.transform = `scale(${parseInt(scaleValue) / 100})`;
+    }
+})
+
+const filterBtns = document.querySelectorAll('.effects__radio');
+const filterRangeContainer = document.querySelector('.img-upload__scale');
+const filterRange = filterRangeContainer.querySelector('.scale__value');
+const filterRangePin = filterRangeContainer.querySelector('.scale__pin');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        let value = null;
+        for (let i = 0; i < filterBtns.length; i++) {
+            value = filterBtns[i].value;
+            if (filterBtns[i].checked) {
+                userImg.classList.add(`effects__preview--${value}`);
+            } else {
+                userImg.classList.remove(`effects__preview--${value}`);
+            }
+        }
+        
+        if(btn.value === 'none') {
+            filterRangeContainer.classList.add('hidden');
+        } else {
+            filterRangeContainer.classList.remove('hidden');
+        }
+    })
+})
+
+let x = null;
+let y = null;
+
+filterRangePin.addEventListener('mousedown', event => {
+
+    filterRangePin.style.position = 'absolute';
     
+    moveAt(event);
+
+    filterRangePin.style.zIndex = 1000;
+
+    document.addEventListener('mousemove', handleMouseMove)
+
+    document.addEventListener('mouseup', handleMouseUp)
+    // userImg.style.filter = `grayscale(${parseInt(filterRange.value) / 100})`
+})
+
+function moveAt(e) {
+    filterRangePin.style.left = `${e.pageX - filterRangePin.getBoundingClientRect().x}px`
+    console.log(filterRangePin.getBoundingClientRect())
+    console.log(e.pageX)  
+}
+
+function handleMouseMove(event) {
+    moveAt(event);    
+}
+
+function handleMouseUp() {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
 }
