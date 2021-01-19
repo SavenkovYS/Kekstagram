@@ -143,7 +143,6 @@ main {
   z-index: 100;
 }
 
-
 /* Кнопка закрытия */
 
 .cancel {
@@ -919,6 +918,12 @@ main {
   color: #000000;
 
   border-radius: 5px;
+}
+
+.text__description--error,
+.text__hashtags--error {
+  border-color: red;
+  outline: none;
 }
 
 

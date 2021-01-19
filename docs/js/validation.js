@@ -7,35 +7,49 @@ function setValidity() {
     let userHashtags = [];
     let userComment = '';
 
+    
+
     hashtagsInput.addEventListener('input', onHashtagInput);
     commentInput.addEventListener('input', onCommentInput);
-    
+
+    function checkValidity(hashtags) {
+        for (let i = 0; i < hashtags.length; i++) {
+            if (hashtags[i][0] !== '#') {
+                return 'Хэштэг должен начинаться с #';
+            } else if (hashtags[i] === '#') {
+                return 'Хэштэг не может состоять только из символа #';
+            } else if (hashtags[i].length > 20) {
+                return 'Максимальная длина хэштэга 20 символов';
+            } else if (hashtags.indexOf(hashtags[i]) !== i) {
+                return 'Один хэштэг нельзя использовать дважды';
+            } else if (hashtags.length > 5) {
+                return 'Максимум можно поставить 5 хэштэгов';
+            }  
+        }
+        return '';
+    }
+
     function onHashtagInput() {
         userHashtags = hashtagsInput.value.trim().split(' ').filter(item => item !== '');  
         const lowerCaseHashtags = userHashtags.map(hashtag => hashtag.toLowerCase());
-        console.log(hashtagsInput.value)
 
-        lowerCaseHashtags.forEach((hashtag, i, initArray) => {
-            if (hashtag[0] !== '#') {
-                hashtagsInput.setCustomValidity('Хэштэг должен начинаться с #');
-            } else if (hashtag === '#') {
-                hashtagsInput.setCustomValidity('Хэштэг не может состоять только из символа #');
-            } else if (hashtag.length > 20) {
-                hashtagsInput.setCustomValidity('Максимальная длина хэштэга 20 символов');
-            } else if (initArray.indexOf(hashtag) !== i) {
-                hashtagsInput.setCustomValidity('Один хэштэг нельзя использовать дважды');
-            } else if (initArray.length > 5) {
-                hashtagsInput.setCustomValidity('Максимум можно поставить 5 хэштэгов');
-            } else {
-                hashtagsInput.setCustomValidity('');
-            }
-        })
+        let message = checkValidity(lowerCaseHashtags);
+        console.log(message)
+        hashtagsInput.setCustomValidity(message);
+        if(message !== '') {
+            console.log(hashtagsInput.className)
+            hashtagsInput.classList.add('text__hashtags--error');
+        } else {
+            hashtagsInput.classList.remove('text__hashtags--error')
+        }
     }
 
     function onCommentInput() {
         if (userComment.length > 140) {
             commentInput.setCustomValidity('Длина комментария не должна превышать 140 символов');
         }
+
+        commentInput.setCustomValidity('');
     }
 
     submitForm();
