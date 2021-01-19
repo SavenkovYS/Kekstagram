@@ -1,9 +1,11 @@
+import submitForm from './formSubmit.js';
+
 function setValidity() {
     const hashtagsInput = document.querySelector('.text__hashtags');
     const commentInput = document.querySelector('.text__description');
 
-    const userHashtags = [];
-    const userComment = '';
+    let userHashtags = [];
+    let userComment = '';
 
     hashtagsInput.addEventListener('input', onHashtagInput);
     commentInput.addEventListener('input', onCommentInput);
@@ -11,6 +13,7 @@ function setValidity() {
     function onHashtagInput() {
         userHashtags = hashtagsInput.value.trim().split(' ').filter(item => item !== '');  
         const lowerCaseHashtags = userHashtags.map(hashtag => hashtag.toLowerCase());
+        console.log(hashtagsInput.value)
 
         lowerCaseHashtags.forEach((hashtag, i, initArray) => {
             if (hashtag[0] !== '#') {
@@ -34,6 +37,8 @@ function setValidity() {
             commentInput.setCustomValidity('Длина комментария не должна превышать 140 символов');
         }
     }
+
+    submitForm();
 }
 
 setValidity();
