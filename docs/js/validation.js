@@ -7,8 +7,6 @@ function setValidity() {
     let userHashtags = [];
     let userComment = '';
 
-    
-
     hashtagsInput.addEventListener('input', onHashtagInput);
     commentInput.addEventListener('input', onCommentInput);
 
@@ -34,18 +32,17 @@ function setValidity() {
         const lowerCaseHashtags = userHashtags.map(hashtag => hashtag.toLowerCase());
 
         let message = checkValidity(lowerCaseHashtags);
-        console.log(message)
         hashtagsInput.setCustomValidity(message);
         if(message !== '') {
-            console.log(hashtagsInput.className)
             hashtagsInput.classList.add('text__hashtags--error');
         } else {
-            hashtagsInput.classList.remove('text__hashtags--error')
+            hashtagsInput.classList.remove('text__hashtags--error');
         }
     }
 
     function onCommentInput() {
         if (userComment.length > 140) {
+            commentInput.classList.add('text__description--error');
             commentInput.setCustomValidity('Длина комментария не должна превышать 140 символов');
         }
 
