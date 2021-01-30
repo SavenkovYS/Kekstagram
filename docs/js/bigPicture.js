@@ -11,7 +11,9 @@ function showBigPicture(pictures) {
             document.body.classList.add('modal-open');
             bigPictureOverlay.classList.remove('hidden');
             commentsContainer.innerHTML = '';
-            document.querySelector('.social__comment-count').innerHTML = `5 из <span class="comments-count">125</span> комментариев`
+            document.querySelector('.social__comment-count').innerHTML = pictures[i].comments.length >= 5 ? 
+            `5 из <span class="comments-count">${pictures[i].comments.length}</span> комментариев` :
+            `${pictures[i].comments.length} из <span class="comments-count">${pictures[i].comments.length}</span> комментариев`
 
             bigPictureOverlay.querySelector('img').src = pictures[i].url;
             bigPictureOverlay.querySelector('.likes-count').textContent = pictures[i].likes;
