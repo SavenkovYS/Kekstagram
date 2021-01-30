@@ -11,7 +11,7 @@ async function getPictures() {
         const response = await fetch(url);
         const pictures = await response.json();
 
-        function drawPictures(picturesArray) {
+        function displayPictures(picturesArray) {
             document.querySelectorAll('.picture__link').forEach(elem => elem.remove());
 
             picturesArray.forEach(picture => {
@@ -24,13 +24,26 @@ async function getPictures() {
             });
         }
 
-        let sortedImages = [...pictures];
-
-        drawPictures(sortedImages);
-        showBigPicture(sortedImages);
+        displayPictures(pictures);
+        showBigPicture(pictures);
 
         imgFilterSection.classList.remove('img-filters--inactive');
 
+        function debounce() {
+            let lastTimeout = null;
+            return function(images) {
+                if (lastTimeout) {
+                    clearTimeout(lastTimeout);
+                }
+                lastTimeout = setTimeout(() => {
+                    displayPictures(images);
+                    showBigPicture(images);
+                }, 500) 
+            }        
+        }
+
+        const debounceFunc = debounce();
+        
         imgFilterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 for (let i = 0; i < imgFilterBtns.length; i++) {
@@ -38,11 +51,12 @@ async function getPictures() {
                 }
                 btn.classList.add('img-filters__button--active');
 
+                let sortedImages = [];
+
                 if (btn.id === 'filter-popular') {
                     sortedImages = [];
                     sortedImages = [...pictures];
-                    drawPictures(sortedImages);
-                    showBigPicture(sortedImages);
+                    debounceFunc(sortedImages);
                 }
 
                 if (btn.id === 'filter-new') {
@@ -56,8 +70,7 @@ async function getPictures() {
 
                         sortedImages.push(pictures[randomIndex]);
                     }
-                    drawPictures(sortedImages);
-                    showBigPicture(sortedImages);
+                    debounceFunc(sortedImages);
                 }
 
                 if (btn.id === 'filter-discussed') {
@@ -65,12 +78,12 @@ async function getPictures() {
                     sortedImages = pictures.slice().sort((a, b) => {
                         return b.comments.length - a.comments.length;
                     })
-                    drawPictures(sortedImages);
-                    showBigPicture(sortedImages);   
+                    debounceFunc(sortedImages);
                 }
             })
-        })
-
+        })  
+        
+        
     } catch(error) {
         console.log(error);
     }
