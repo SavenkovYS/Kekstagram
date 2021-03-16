@@ -8,8 +8,14 @@ function showBigPicture(pictures) {
    
     for (let i = 0; i < pictures.length; i++) {
         allPictures[i].addEventListener('click', () => {
+
+            // Показ большого изображения при нажатии
+
             document.body.classList.add('modal-open');
             bigPictureOverlay.classList.remove('hidden');
+
+            // Отрисовка данных внутри изображения
+
             commentsContainer.innerHTML = '';
             document.querySelector('.social__comment-count').innerHTML = pictures[i].comments.length >= 5 ? 
             `5 из <span class="comments-count">${pictures[i].comments.length}</span> комментариев` :
@@ -27,6 +33,8 @@ function showBigPicture(pictures) {
         
                 commentsContainer.appendChild(commentElement);
             })
+
+            // Загрузка дополнительных комментариев
 
             const LoadMoreBtn = document.querySelector('.social__loadmore'); 
             const allComments = document.querySelectorAll('.social__comment');
@@ -63,6 +71,8 @@ function showBigPicture(pictures) {
                 const commentsNumberHtml = `${shownCommentsNumber} из <span class="comments-count">${pictures[i].comments.length}</span> комментариев`;
                 document.querySelector('.social__comment-count').innerHTML = commentsNumberHtml;
             }
+
+            // Закрытие большого изображения
 
             closeButton.addEventListener('click', () => closeBigPicture());
 

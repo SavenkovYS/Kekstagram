@@ -7,12 +7,19 @@ async function getPictures() {
     const imgFilterSection = document.querySelector('.img-filters');
     const imgFilterBtns = document.querySelectorAll('.img-filters__button');
 
+    // Получаем картинки с сервера
+
     try {
         const response = await fetch(url);
         const pictures = await response.json();
 
         function displayPictures(picturesArray) {
+
+            // Удаляем предыдущие картинки со страницы
+
             document.querySelectorAll('.picture__link').forEach(elem => elem.remove());
+
+            // Отображаем полученный массив картинок
 
             picturesArray.forEach(picture => {
                 const pictureElement = pictureTemplate.cloneNode(true);
@@ -29,6 +36,8 @@ async function getPictures() {
 
         imgFilterSection.classList.remove('img-filters--inactive');
 
+        // Устранение дребезга
+
         function debounce() {
             let lastTimeout = null;
             return function(images) {
@@ -43,6 +52,8 @@ async function getPictures() {
         }
 
         const debounceFunc = debounce();
+
+        // Логика при нажатии на кнопки фильтра картинок
         
         imgFilterBtns.forEach(btn => {
             btn.addEventListener('click', () => {

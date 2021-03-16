@@ -7,6 +7,8 @@ function filterUserPicture() {
     const sliderPin = sliderContainer.querySelector('.scale__pin');  
     const sliderLevel = sliderContainer.querySelector('.scale__level');
 
+    // Смена фильтров загруженной фотографии
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             sliderInput.value = 100;
@@ -30,12 +32,18 @@ function filterUserPicture() {
         })
     })
 
+    // Перемещение ползунка слайдера
+
     sliderPin.addEventListener('mousedown', event => {
+
+        // Координаты полосы слайдера
+
         const sliderLevelDefaultCoords = sliderLevel.getBoundingClientRect();
         const sliderLevelCoords = {};
         sliderLevelCoords.top = sliderLevelDefaultCoords.top + pageYOffset;
         sliderLevelCoords.left = sliderLevelDefaultCoords.left + pageXOffset;
 
+        // Координаты ползунка слайдера
         
         const sliderPinDefaultCoords = sliderPin.getBoundingClientRect();
         const sliderPinCoords = {};
@@ -70,6 +78,8 @@ function filterUserPicture() {
             setFilters();
         }
     })
+
+    // Эффекты фильтров
 
     function setFilters() {
         const value = sliderInput.value; 
