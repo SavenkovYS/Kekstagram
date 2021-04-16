@@ -51,7 +51,7 @@ function filterUserPicture() {
         sliderPinCoords.left = sliderPinDefaultCoords.left + pageXOffset;
 
         let newLeftPosition = null;
-        let right = sliderLevel.offsetWidth; //
+        let right = sliderLevel.offsetWidth; 
 
         document.addEventListener('mousemove', onMouseMove)
 
